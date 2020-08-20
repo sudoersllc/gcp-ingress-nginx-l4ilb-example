@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socat-service
+spec:
+  revisionHistoryLimit: 5
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 20%
+      maxSurge: 100%
+  replicas: 3
+  selector:
+    matchLabels:
+      app: socat-service
+  template:
+    metadata:
+      labels:
+        app: socat-service
+    spec:
+      containers:
+      - name: socat
+        image: gcr.io/gke-spinnaker-dev-057a/socat-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 10081
+        resources:
+          limits:
+            cpu: 100m
+            memory: 168Mi
+          requests:
+            cpu: 100m
+            memory: 168Mi
+        livenessProbe:
+          tcpSocket:
+            port: 10081
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+          periodSeconds: 30
+          failureThreshold: 20
+          successThreshold: 1
+        readinessProbe:
+          tcpSocket:
+            port: 10081
+          initialDelaySeconds: 5
+          failureThreshold: 20
+          successThreshold: 1
+          timeoutSeconds: 10

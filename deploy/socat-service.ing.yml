@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: socat-ing
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # Create the secret containing the trusted ca certificates
+    # Specify the verification depth in the client certificates chain
+    # Specify an error page to be redirected to verification errors
+    #nginx.ingress.kubernetes.io/auth-tls-error-page: "http://www.mysite.com/error-cert.html"
+    # Specify if certificates are passed to upstream server
+    #nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+spec:
+  rules:
+  - host: test.a2332.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: socat-service
+          servicePort: 80

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ilb-service
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+  labels:
+    app: ilb-service-app-name
+spec:
+  type: LoadBalancer
+  selector:
+    app: ilb-service-app-name
+  ports:
+  - port: 80
+    name: http
+    targetPort: 80
+    protocol: TCP

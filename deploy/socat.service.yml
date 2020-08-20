@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: socat-service
+  labels:
+    app: socat-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 10081
+  selector:
+    app: socat-service
